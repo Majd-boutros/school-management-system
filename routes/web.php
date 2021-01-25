@@ -13,6 +13,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+
+Auth::routes();
+
+Route::group(['prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth']], function()
+{
+//    Route::get('/', function () {
+//        return view('dashboard');
+//    });
+
+    Route::get('test','testController@index')->name('test');
+
+    Route::get('/','HomeController@index')->name('dashboard');
+
+########################################### Start Grades Routes ##############################################
+    Route::group(['namespace'=>'Grades'],function (){
+        Route::get('Grades','gradesController@index')->name('grades.get');
+        Route::post('Grades/store','gradesController@store')->name('grades.store');
+    });
+########################################### Start Grades Routes ##############################################
+
 });
+
+
+
+
