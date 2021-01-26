@@ -6,5 +6,6 @@ return [
     'Grades' => 'Grades',
     'Grades_list' => 'Grades List',
     'Home' => 'Home',
+    'Title' => 'Grade school'
 
 ];
