@@ -31,6 +31,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
     Route::group(['namespace'=>'Grades'],function (){
         Route::get('Grades','gradesController@index')->name('grades.get');
         Route::post('Grades/store','gradesController@store')->name('grades.store');
+        Route::post('Grades/update','gradesController@update')->name('grades.update');
+        Route::post('Grades/delete','gradesController@destroy')->name('grades.destroy');
     });
 ########################################### Start Grades Routes ##############################################
 

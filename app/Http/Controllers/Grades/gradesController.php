@@ -36,6 +36,48 @@ class gradesController extends Controller
 
         }
 
+    }
 
+    public function update(StoreGrades $request){
+
+        try{
+            $validated = $request->validated();
+            $grade_id = $request->id;
+            $grade = Grade::findOrFail($grade_id);
+//        $data = [
+//          'name' => ['ar'=>$request->Name , 'en' => $request->Name_en],
+//            'notes' => $request->Notes
+//        ];
+
+            $grade->update([
+                $grade->name = ['en'=>$request->Name_en,'ar'=>$request->Name],
+                $grade->notes = $request->Notes
+            ]);
+
+            if($grade){
+                $grade->save();
+                toastr()->success(trans('messages.Update'));
+            }else{
+                toastr()->error(trans('messages.error'));
+            }
+
+            return redirect()->route('grades.get');
+        }
+        catch (\Exception $e){
+                //return redirect()->route('grades.get')->withErrors(['error'=>$e->getMessage()]);
+                return redirect()->route('grades.get')->withErrors(trans('messages.ExErr'));
+        }
+    }
+
+    public function destroy(Request $request){
+        try{
+            $grade_id = $request->id;
+            Grade::findOrFail($grade_id)->delete();;
+            toastr()->error(trans('messages.Delete'));
+            return redirect()->route('grades.get');
+        }
+        catch (\Exception $e){
+            return redirect()->route('grades.get')->withErrors(trans('messages.ExErr'));
+        }
     }
 }
