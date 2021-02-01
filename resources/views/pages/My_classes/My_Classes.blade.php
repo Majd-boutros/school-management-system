@@ -79,9 +79,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <!-- add_form -->
-                                                <form action="#" method="post">
-                                                    {{ method_field('patch') }}
+                                                <form action="{{route('class.update')}}" method="post">
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col">
@@ -143,12 +141,11 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="#" method="post">
-                                                    {{ method_field('Delete') }}
+                                                <form action="{{route('class.destroy')}}" method="post">
                                                     @csrf
-                                                    {{ trans('My_Classes_trans.Warning_Class ') }}
+                                                    {{ trans('My_Classes_trans.Warning_Class') }}
                                                     <input id="id" type="hidden" name="id" class="form-control"
-                                                           value="">
+                                                           value="{{$class->id}}">
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">{{ trans('My_Classes_trans.Close') }}</button>
