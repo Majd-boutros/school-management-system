@@ -25,7 +25,7 @@ class StoreClasses extends FormRequest
     {
         return [
             'Name' => 'required',
-            'Name_class_en' => 'require,',
+            'Name_class_en' => 'require',
             'Grade_id' => 'required'
         ];
     }
@@ -35,7 +35,7 @@ class StoreClasses extends FormRequest
         return [
             'Name.required' => trans('validation.required'),
             'Name_class_en.required' => trans('validation.required'),
-            //'Grade_id.required' => trans('validation.required')
+            'Grade_id.required' => trans('validation.required')
         ];
     }
 }
