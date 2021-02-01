@@ -16,6 +16,10 @@ class gradesController extends Controller
 
     public function store(StoreGrades $request){
 
+        if(Grade::select('id')->where('name->ar',$request->Name)->orWhere('name->en',$request->Name_en)->exists()){
+            return redirect()->route('grades.get')->withErrors(trans('grades_trans.exists'));
+        }
+
         try{
             $validated = $request->validated();
             $grade = new Grade();
