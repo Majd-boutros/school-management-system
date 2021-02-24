@@ -8,6 +8,7 @@ use Spatie\Translatable\HasTranslations;
 class Classroom extends Model
 {
     use HasTranslations;
+
     protected $table = 'classrooms';
     protected $fillable = ['name_class','grade_id'];
     protected $hidden = ['created_at','updated_at'];
@@ -23,5 +24,8 @@ class Classroom extends Model
         return $this->belongsTo('App\Models\Grade','grade_id','id');
     }
 
+    public function sections(){
+        return $this->hasMany('App\Models\Section','class_id','id');
+    }
 
 }

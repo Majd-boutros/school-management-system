@@ -18,13 +18,11 @@ class ClassroomsController extends Controller
         return view('pages.My_classes.My_Classes',compact('classes','grades'));
     }
 
-    public function store(Request $request){
+    public function store(StoreClasses $request){
         try{
-           // return $request;
-                    //$validated = $request->validated();
-
+            $validated = $request->validated();
             $classes = $request->List_Classes;
-
+           // return $classes;
             $data = [];
 
             foreach ($classes as $index=>$class){
@@ -45,12 +43,15 @@ class ClassroomsController extends Controller
 
     }
 
-    public function update(Request $request){
+    public function update(StoreClasses $request){
         try {
+            //return $request;
             $class_id = $request->id;
             $class = Classroom::findOrFail($class_id);
+            //return $class->grade_id;
             $class->update([
-                $class->name_class = ['en' => $request->Name_en, 'ar' => $request->Name]
+                $class->name_class = ['en' => $request->Name_en, 'ar' => $request->Name],
+                $class->grade_id = $request->Grade_id
             ]);
             toastr()->success(trans('messages.Update'));
             return redirect()->route('class.get');
@@ -63,13 +64,32 @@ class ClassroomsController extends Controller
 
     public function destroy(Request $request){
         try{
-            $class_id = $request->id;
-            Classroom::findOrFail($class_id)->delete();
+            if($request->has('delete_all_id')){
+                $classes_ids = array();
+                $request->delete_all_id;
+                $classes_ids = explode(",",$request->delete_all_id);
+                $classes = Classroom::WhereIn('id',$classes_ids);
+                $classes->delete();
+            }else{
+                $class_id = $request->id;
+                Classroom::findOrFail($class_id)->delete();
+            }
             toastr()->error(trans('messages.Delete'));
             return redirect()->route('class.get');
         }
         catch (\Exception $e){
             return redirect()->route('class.get')->withErrors(trans('messages.ExErr'));
         }
+    }
+
+    public function classesFilter(Request $request){
+        $filter_id = $request->filter;
+
+        $data_filters =  Classroom::select('id','grade_id','name_class')->with(['grade'=>function($query){
+          $query->select('id','name');
+      }])->where('grade_id',$filter_id)->get();
+
+        $grades = Grade::select('id','name')->get();
+        return view('pages.My_classes.My_Classes',compact('data_filters','grades'));
     }
 }

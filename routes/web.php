@@ -42,8 +42,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
         Route::post('class/store','ClassroomsController@store')->name('class.store');
         Route::post('class/update','ClassroomsController@update')->name('class.update');
         Route::post('class/delete','ClassroomsController@destroy')->name('class.destroy');
+        Route::post('classes-filter','ClassroomsController@classesFilter')->name('classes.filter');
     });
 ########################################### Start ClassRooms Routes ##############################################
+
+########################################### Start Sections Routes ##############################################
+    Route::group(['namespace'=>'Sections'],function (){
+        Route::get('sections','SectionsController@index')->name('section.get');
+        Route::post('sections/store','SectionsController@store')->name('section.store');
+        Route::post('sections/update','SectionsController@update')->name('section.update');
+        Route::post('sections/delete','SectionsController@destroy')->name('section.destroy');
+        Route::post('sections-filter','SectionsController@sectionsFilter')->name('sections.filter');
+    });
+########################################### Start Sections Routes ################################################
 
 });
 
