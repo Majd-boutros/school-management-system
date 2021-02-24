@@ -24,17 +24,17 @@ class StoreClasses extends FormRequest
     public function rules()
     {
         return [
-            'Name' => 'required',
-            'Name_class_en' => 'require',
-            'Grade_id' => 'required'
+            "List_Classes.*.Name"  => "required",
+            'List_Classes.*.Name_class_en' => 'required',
+            'List_Classes.*.Grade_id' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'Name.required' => trans('validation.required'),
-            'Name_class_en.required' => trans('validation.required'),
+            'List_Classes.Name.required' => trans('validation.required'),
+            'List_Classes.Name_class_en.required' => trans('validation.required'),
             'Grade_id.required' => trans('validation.required')
         ];
     }
