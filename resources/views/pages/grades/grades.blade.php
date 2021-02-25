@@ -37,11 +37,16 @@
                         </ul>
                     </div>
                 @endif
-                <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
-                    {{ trans('grades_trans.add_Grade') }}
-                </button>
-                <br><br>
+                <div id="delete-warning" class="card-body">
+                </div><br>
+                    <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
+                        {{ trans('grades_trans.add_Grade') }}
+                    </button>
+                    <br><br>
+                        <button type="button" class="btn btn-danger" id="deleteMultipleBtn">Multiple delete</button>
+                    <br><br>
                 <div class="table-responsive">
+                    <input type="checkbox" id="select_all" /> Select all
                     <table id="datatable" class="table table-striped table-bordered p-0">
                         <thead>
                             <tr>
@@ -49,11 +54,12 @@
                                 <th>{{trans('grades_trans.name')}}</th>
                                 <th>{{trans('grades_trans.Notes')}}</th>
                                 <th>{{trans('grades_trans.Processes')}}</th>
+                                <th>{{trans('grades_trans.Select')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($grades as $index=>$grade)
-                                <tr>
+                                <tr class="grade-id{{ $grade->id }}">
                                     <td>{{$index+1}}</td>
                                     <td>{{$grade->name}}</td>
                                     <td>{{$grade->notes}}</td>
@@ -140,6 +146,7 @@
                                                 <form action="{{route('grades.destroy')}}" method="POST">
                                                     @csrf
                                                     <input id="id" type="hidden" name="id" class="form-control" value="{{$grade->id}}">
+                                                    <input type="hidden" name="check" class="form-control" value="1">
                                                     <div class="modal-body">
                                                         {{ trans('Grades_trans.Warning_Grade') }}
                                                     </div>
@@ -154,6 +161,10 @@
                                         </div>
                                     </div>
                                     <!-- End Delete_modal_Grade -->
+
+                                    <td>
+                                        <input type="checkbox" name="multiDel[]" class="checkVal" value="{{$grade->id}}">
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -225,4 +236,85 @@
 @section('js')
     @toastr_js
     @toastr_render
+
+    <script>
+
+        $(document).ready(function (){
+
+            $('#select_all').on('click',function(){
+                if(this.checked){
+                    $('.checkVal').each(function(){
+                        this.checked = true;
+                    });
+                }else{
+                    $('.checkVal').each(function(){
+                        this.checked = false;
+                    });
+                }
+            });
+
+           $('#deleteMultipleBtn').on('click',function (){
+
+               var id_chk = [];
+
+               //console.log(id_chk);
+
+               $('.checkVal:checked').each(function(){
+                   id_chk.push($(this).val());
+               });
+
+               if(id_chk.length>0){
+
+
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       }
+                   });
+                   $.ajax({
+
+                       url: '{{route('grades.destroy')}}',
+                       type: 'POST',
+                       data: {
+                           "_token": "{{ csrf_token() }}",
+                           "mulCheck": id_chk,
+                           "check": "2"
+                       },
+                       dataType: 'json',
+                       success: function (response) {
+                            if(response.success == false){
+                                let res = response.data;
+
+                                var warningMsg = `${response.msg}`;
+
+                                $.each(res, function(index, value) {
+                                    warningMsg += `
+                                    <uL>
+                                        <li>${value}</li>
+                                    </ul>
+                                `;
+                                });
+                                $('#delete-warning').addClass('text text-danger');
+                                $('#delete-warning').append(warningMsg);
+
+                            }
+                            else if (response.success == true){
+
+                                $('#delete-warning').addClass('text text-danger');
+                                $('#delete-warning').html(response.msg);
+
+                                $.each(response.data, function(index, value) {
+                                    $('.grade-id'+value).remove();
+                                });
+
+                            }
+
+                       },
+
+                   });
+               }
+           });
+        });
+
+    </script>
 @endsection

@@ -12,5 +12,9 @@ return [
     'stage_name_en' => 'Grade name in english',
     'submit' => 'save data',
     'Close' => 'close',
+    'exists' => 'The field already exists !',
+    'Select' => 'Select',
+    'warning_del_children' => 'This grade content classes, please delete the classes first !',
+
 
 ];
