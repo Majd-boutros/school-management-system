@@ -15,6 +15,12 @@ class Section extends Model
     public $translatable = ['name_section'];
     public $timestamps = true;
 
+    protected function asJson($value)
+    {
+        return json_encode($value,JSON_UNESCAPED_UNICODE);
+    }
+
+
     public function grade(){
         return $this->belongsTo('App\Models\Grade','grade_id','id');
     }
