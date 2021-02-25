@@ -50,9 +50,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
     Route::group(['namespace'=>'Sections'],function (){
         Route::get('sections','SectionsController@index')->name('section.get');
         Route::post('sections/store','SectionsController@store')->name('section.store');
+        Route::get('grade/class/{grade_id}','SectionsController@getClassesByGradeId')->name('gradeClass.get');
         Route::post('sections/update','SectionsController@update')->name('section.update');
         Route::post('sections/delete','SectionsController@destroy')->name('section.destroy');
-        Route::post('sections-filter','SectionsController@sectionsFilter')->name('sections.filter');
     });
 ########################################### Start Sections Routes ################################################
 

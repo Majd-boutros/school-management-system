@@ -45,13 +45,15 @@
                     <!-- sections-->
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#sections-menu">
-                            <div class="pull-left"><i class="fas fa-chalkboard"></i></i><span
-                                    class="right-nav-text">{{trans('main_trans.sections')}}</span></div>
+                            <div class="pull-left">
+                                <i class="fas fa-chalkboard"></i>
+                                <span class="right-nav-text">{{trans('main_trans.sections')}}</span>
+                            </div>
                             <div class="pull-right"><i class="ti-plus"></i></div>
                             <div class="clearfix"></div>
                         </a>
                         <ul id="sections-menu" class="collapse" data-parent="#sidebarnav">
-                            <li> <a href="calendar.html">Events Calendar </a> </li>
+                            <li> <a href="{{route('section.get')}}">Events Calendar </a> </li>
                             <li> <a href="calendar-list.html">List Calendar</a> </li>
                         </ul>
                     </li>
