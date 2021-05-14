@@ -12,6 +12,7 @@ use App\Models\Grade;
 class ClassroomsController extends Controller
 {
     public function index(){
+        $ccc = new Classroom();
         $classes = Classroom::select('id','grade_id','name_class')->with('grade')->get();
         $grades = Grade::select('id','name')->get();
         //return $grades;
